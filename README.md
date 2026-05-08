@@ -10,7 +10,7 @@ A comprehensive deep learning project for multi-class audio emotion classificati
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 speech_emotion_recognition/
@@ -41,7 +41,7 @@ speech_emotion_recognition/
 
 ---
 
-## 📊 Emotion Classes
+## Emotion Classes
 
 | Label | Description |
 |-------|-------------|
@@ -55,7 +55,7 @@ speech_emotion_recognition/
 
 ---
 
-## 🧠 Models Compared
+## Models Compared
 
 | Model | Input Features | Architecture | Purpose |
 |-------|---|---|---|
@@ -65,7 +65,7 @@ speech_emotion_recognition/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.7+
@@ -123,7 +123,7 @@ The app will open in your browser at `http://localhost:8501`. You can upload aud
 
 ---
 
-## 📈 Key Features
+## Key Features
 
 - **Exploratory Data Analysis:** Visualize audio distributions, emotion class balance, and audio characteristics
 - **Feature Engineering:** MFCC, mel-spectrograms, and chroma features with audio augmentation
@@ -135,7 +135,7 @@ The app will open in your browser at `http://localhost:8501`. You can upload aud
 
 ---
 
-## 📝 Project Workflow
+## Project Workflow
 
 1. **Data Exploration** → Understand emotion distributions and audio characteristics
 2. **Feature Extraction** → Convert raw audio to MFCC and spectrogram features
@@ -146,7 +146,7 @@ The app will open in your browser at `http://localhost:8501`. You can upload aud
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 Key packages used in this project:
 - **librosa** - Audio processing and feature extraction
@@ -163,7 +163,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🎯 Expected Results
+## Expected Results
 
 - **MLP Baseline:** ~60-70% accuracy
 - **CNN Model:** ~75-85% accuracy
@@ -173,7 +173,7 @@ Results may vary based on hyperparameters, data split, and augmentation techniqu
 
 ---
 
-## 📚 Resources
+## Resources
 
 - **TESS Dataset:** [Toronto Emotional Speech Set on Kaggle](https://www.kaggle.com/datasets/ejlok1/toronto-emotional-speech-set-tess)
 - **Librosa Documentation:** https://librosa.org/
@@ -182,20 +182,19 @@ Results may vary based on hyperparameters, data split, and augmentation techniqu
 
 ---
 
-## 👤 Author
+## Author
 
-**Zaynab Shahid**  
-CS-419 Deep Learning Project  
+**Zaynab Shahid, Rameen Arshad and Laiba Riaz** 
 2026
 
 ---
 
-## 📄 License
+## License
 
 This project is provided as-is for educational purposes.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 For improvements or bug reports, please open an issue or submit a pull request.
