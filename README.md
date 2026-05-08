@@ -199,7 +199,8 @@ Results may vary based on hyperparameters, data split, and augmentation techniqu
 ## Author
 
 **Zaynab Shahid, Rameen Arshad and Laiba Riaz** 
-2026
+
+- 2026
 
 ---
 
