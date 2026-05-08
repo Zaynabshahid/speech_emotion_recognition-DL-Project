@@ -1,7 +1,7 @@
 # Speech Emotion Recognition
 ## CS-419 Deep Learning Semester Project
 
-A comprehensive deep learning project for multi-class audio emotion classification using the TESS (Toronto Emotional Speech Set) dataset. This project explores multiple neural network architectures, from baseline MLPs to advanced CNN-LSTM hybrid models, with detailed analysis and visualization.
+A comprehensive deep learning project for multi-class audio emotion classification using the TESS (Toronto Emotional Speech Set) dataset. This project explores multiple neural network architectures, feature extraction pipelines, and model evaluation techniques for speech emotion recognition.
 
 **Dataset:** TESS (Toronto Emotional Speech Set)  
 **Task:** Multi-class audio emotion classification  
@@ -12,31 +12,45 @@ A comprehensive deep learning project for multi-class audio emotion classificati
 
 ## Project Structure
 
-```
-speech_emotion_recognition/
+```text
+speech_emotion_recognition-DL-Project/
+├── README.md
+├── LICENSE
+├── app.py
+├── requirements.txt
 ├── notebooks/
-│   ├── 01_EDA.ipynb                  # Exploratory Data Analysis
-│   ├── 02_Feature_Extraction.ipynb   # MFCC + Spectrogram extraction
-│   ├── 03_Baseline_MLP.ipynb         # Phase 1 - Baseline model
-│   ├── 04_CNN_Model.ipynb            # Phase 2 - CNN on spectrograms
-│   ├── 05_CNN_LSTM.ipynb             # Phase 3 - CNN + LSTM hybrid
-│   ├── 06_Ablation_Study.ipynb       # Phase 4 - Ablation experiments
-│   └── 07_GradCAM_Analysis.ipynb     # Phase 5 - Visualization & error analysis
-├── src/
-│   ├── data_loader.py                # Dataset loading and splitting
-│   ├── feature_extraction.py         # MFCC, spectrogram, chroma features
-│   ├── augmentation.py               # Audio augmentation techniques
-│   ├── models.py                     # All model architectures
-│   ├── train.py                      # Training loop with callbacks
-│   ├── evaluate.py                   # Evaluation metrics and plots
-│   └── utils.py                      # Helper functions
+│   ├── 01_EDA.ipynb
+│   ├── 02_Feature_Extraction.ipynb
+│   ├── 03_Baseline_MLP.ipynb
+│   ├── 04_CNN_Model.ipynb
+│   ├── 05_CNN_LSTM.ipynb
+│   ├── 06_Ablation_Study.ipynb
+│   └── 07_GradCAM_Analysis.ipynb
+├── analysis/
+│   ├── results/
+│   │   ├── class_distribution.png
+│   │   ├── mlp_baseline_confusion_matrix.png
+│   │   ├── mlp_baseline_history.png
+│   │   ├── sample_spectrograms.png
+│   │   └── logs/
+│   │       ├── cnn_spectrogram_history.csv
+│   │       └── mlp_baseline_history.csv
+│   └── src/
+│       ├── augmentation.py
+│       ├── data_loader.py
+│       ├── evaluate.py
+│       ├── feature_extraction.py
+│       ├── models.py
+│       ├── train.py
+│       └── utils.py
 ├── results/
-│   └── (auto-generated plots, CSVs, saved models)
-├── data/
-│   └── (TESS dataset - download separately)
-├── requirements.txt                  # Python dependencies
-├── app.py                            # Streamlit interactive demo
-└── README.md                         # This file
+│   ├── cache/
+│   │   └── features_mlp_TESS_Toronto_emotional_speech_set_data.npz
+│   ├── checkpoints/
+│   │   └── baseline_mlp_best.keras
+│   └── logs/
+│       └── baseline_mlp_history.csv
+└── TESS Toronto emotional speech set data/
 ```
 
 ---
@@ -87,7 +101,7 @@ Download TESS from Kaggle:
 https://www.kaggle.com/datasets/ejlok1/toronto-emotional-speech-set-tess
 
 Extract and place in:
-```
+```text
 data/TESS Toronto emotional speech set data/
 ```
 
@@ -185,6 +199,8 @@ Results may vary based on hyperparameters, data split, and augmentation techniqu
 ## Author
 
 **Zaynab Shahid, Rameen Arshad and Laiba Riaz** 
+2026
+
 ---
 
 ## License
