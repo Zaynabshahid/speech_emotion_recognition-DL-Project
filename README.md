@@ -66,6 +66,22 @@ Open each notebook in Google Colab or Jupyter and run top to bottom.
    ```
 4. If the app cannot find the dataset, update the dataset path in the sidebar to the extracted TESS folder.
 
+### Streamlit demo
+1. Create and activate your virtual environment (Windows PowerShell example):
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+2. Install dependencies:
+   ```powershell
+   pip install -r requirements.txt
+   ```
+3. Start the app:
+   ```powershell
+   streamlit run app.py
+   ```
+4. If the app cannot find the dataset, update the dataset path in the sidebar to the extracted TESS folder.
+
 ---
 
 ## Emotion Classes
