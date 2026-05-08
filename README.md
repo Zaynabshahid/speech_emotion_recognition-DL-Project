@@ -29,8 +29,8 @@ speech_emotion_recognition/
 │   └── utils.py                      # Helper functions
 ├── results/
 │   └── (auto-generated plots, CSVs, saved models)
-├── ui/
-│   └── index.html                    # Interactive project presentation UI
+├── app.py
+│ 
 └── README.md
 ```
 
@@ -50,8 +50,21 @@ Place the extracted folder as: `data/TESS Toronto emotional speech set data/`
 ### Step 3 - Run notebooks in order
 Open each notebook in Google Colab or Jupyter and run top to bottom.
 
-### Step 4 - Open the UI
-Open `ui/index.html` in any browser to see the interactive project dashboard.
+### Streamlit demo
+1. Create and activate your virtual environment (Windows PowerShell example):
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+2. Install dependencies:
+   ```powershell
+   pip install -r requirements.txt
+   ```
+3. Start the app:
+   ```powershell
+   streamlit run app.py
+   ```
+4. If the app cannot find the dataset, update the dataset path in the sidebar to the extracted TESS folder.
 
 ---
 
