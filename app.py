@@ -44,13 +44,10 @@ EMOTION_COLORS = {
 
 st.set_page_config(
     page_title="Speech Emotion Studio",
-    page_icon="🎙️",
+    page_icon="🔊",
     layout="wide",
 )
 
-# ─────────────────────────────────────────────────────────────
-#  GLOBAL STYLES  ·  Dark neural / waveform aesthetic
-# ─────────────────────────────────────────────────────────────
 st.markdown(
     """
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -84,21 +81,41 @@ st.markdown(
         font-family: var(--font-body) !important;
     }
 
-    /* ── ANIMATED GRID BACKGROUND ── */
+    /* ── ANIMATED AURORA BACKGROUND ── */
     [data-testid="stAppViewContainer"]::before {
         content: '';
         position: fixed;
         inset: 0;
-        background-image:
-            linear-gradient(rgba(56,189,248,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(56,189,248,0.04) 1px, transparent 1px);
-        background-size: 48px 48px;
+        background:
+            radial-gradient(ellipse 80% 50% at 20% 20%, rgba(56,189,248,0.06) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at 80% 70%, rgba(129,140,248,0.05) 0%, transparent 60%),
+            radial-gradient(ellipse 50% 60% at 50% 100%, rgba(52,211,153,0.04) 0%, transparent 60%);
         pointer-events: none;
         z-index: 0;
-        animation: gridPulse 8s ease-in-out infinite;
+        animation: auroraShift 16s ease-in-out infinite alternate;
+    }
+    @keyframes auroraShift {
+        0%   { opacity: 0.6; transform: scale(1.0) translateY(0px);   }
+        33%  { opacity: 0.9; transform: scale(1.02) translateY(-8px); }
+        66%  { opacity: 0.7; transform: scale(0.98) translateY(4px);  }
+        100% { opacity: 1.0; transform: scale(1.01) translateY(-4px); }
+    }
+
+    /* ── ANIMATED GRID OVERLAY ── */
+    [data-testid="stAppViewContainer"]::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(56,189,248,0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(56,189,248,0.035) 1px, transparent 1px);
+        background-size: 52px 52px;
+        pointer-events: none;
+        z-index: 0;
+        animation: gridPulse 10s ease-in-out infinite;
     }
     @keyframes gridPulse {
-        0%, 100% { opacity: 0.6; }
+        0%, 100% { opacity: 0.5; }
         50%       { opacity: 1.0; }
     }
 
@@ -120,12 +137,15 @@ st.markdown(
         -webkit-text-fill-color: transparent !important;
         background-clip: text !important;
         margin-bottom: 0.25rem !important;
-        animation: shimmer 4s ease-in-out infinite;
-        background-size: 200% 200% !important;
+        animation: titleShimmer 6s ease-in-out infinite;
+        background-size: 300% 300% !important;
+        position: relative;
     }
-    @keyframes shimmer {
-        0%, 100% { background-position: 0% 50%; }
-        50%       { background-position: 100% 50%; }
+    @keyframes titleShimmer {
+        0%   { background-position: 0%   50%; }
+        33%  { background-position: 100% 50%; }
+        66%  { background-position: 50%  0%;  }
+        100% { background-position: 0%   50%; }
     }
 
     h2, h3 {
@@ -141,6 +161,7 @@ st.markdown(
     [data-testid="stSidebar"] {
         background: var(--bg-card) !important;
         border-right: 1px solid var(--border) !important;
+        box-shadow: 4px 0 32px rgba(56,189,248,0.06) !important;
     }
     [data-testid="stSidebar"] * {
         color: var(--text-primary) !important;
@@ -162,7 +183,6 @@ st.markdown(
         color: var(--text-muted) !important;
     }
 
-    /* ── SIDEBAR LABEL / HEADER ── */
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] .stMarkdown h1,
     [data-testid="stSidebar"] .stMarkdown h2,
@@ -182,25 +202,46 @@ st.markdown(
         border: 1px solid var(--border) !important;
         border-radius: var(--radius) !important;
         padding: 1.2rem 1.4rem !important;
-        transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s !important;
+        transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s !important;
         position: relative;
         overflow: hidden;
+        animation: cardFadeIn 0.6s ease both;
     }
     [data-testid="metric-container"]::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0;
         height: 2px;
-        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+        background-size: 200% 100%;
         opacity: 0;
-        transition: opacity 0.3s;
+        transition: opacity 0.4s;
+        animation: gradientSlide 3s linear infinite;
+    }
+    [data-testid="metric-container"]::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 0%, rgba(56,189,248,0.07) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.4s;
+        pointer-events: none;
+    }
+    @keyframes gradientSlide {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    @keyframes cardFadeIn {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0);    }
     }
     [data-testid="metric-container"]:hover {
         border-color: var(--border-glow) !important;
-        box-shadow: var(--glow-blue) !important;
-        transform: translateY(-3px) !important;
+        box-shadow: 0 0 30px rgba(56,189,248,0.2), 0 8px 32px rgba(0,0,0,0.4) !important;
+        transform: translateY(-4px) !important;
     }
-    [data-testid="metric-container"]:hover::before {
+    [data-testid="metric-container"]:hover::before,
+    [data-testid="metric-container"]:hover::after {
         opacity: 1;
     }
     [data-testid="stMetricValue"] {
@@ -208,6 +249,7 @@ st.markdown(
         font-size: 1.9rem !important;
         font-weight: 800 !important;
         color: var(--accent) !important;
+        text-shadow: 0 0 20px rgba(56,189,248,0.4);
     }
     [data-testid="stMetricLabel"] {
         font-family: var(--font-mono) !important;
@@ -232,29 +274,42 @@ st.markdown(
         border: none !important;
         padding: 0.65rem 1.8rem !important;
         background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%) !important;
+        background-size: 200% 200% !important;
         color: #fff !important;
         cursor: pointer !important;
-        transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s !important;
-        box-shadow: 0 4px 18px rgba(56,189,248,0.25) !important;
+        transition: transform 0.25s, box-shadow 0.25s, background-position 0.4s !important;
+        box-shadow: 0 4px 18px rgba(56,189,248,0.25), 0 0 0 0 rgba(56,189,248,0) !important;
         position: relative;
         overflow: hidden;
+    }
+    .stButton > button::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 60%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        border-radius: 999px;
     }
     .stButton > button::after {
         content: '';
         position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-        opacity: 0;
-        transition: opacity 0.2s;
+        top: -50%; left: -60%;
+        width: 40%;
+        height: 200%;
+        background: linear-gradient(105deg, transparent, rgba(255,255,255,0.22), transparent);
+        transform: skewX(-15deg);
+        transition: left 0.5s ease;
     }
     .stButton > button:hover {
-        transform: translateY(-2px) scale(1.02) !important;
-        box-shadow: 0 8px 30px rgba(56,189,248,0.4) !important;
+        transform: translateY(-3px) scale(1.03) !important;
+        box-shadow: 0 10px 36px rgba(56,189,248,0.45), 0 0 0 1px rgba(56,189,248,0.2) !important;
+        background-position: right center !important;
     }
-    .stButton > button:hover::after { opacity: 1; }
-    .stButton > button:active { transform: translateY(0) scale(0.98) !important; }
+    .stButton > button:hover::before { opacity: 1; }
+    .stButton > button:hover::after  { left: 120%; }
+    .stButton > button:active { transform: translateY(0) scale(0.97) !important; }
 
-    /* secondary buttons */
     .stButton > button[kind="secondary"] {
         background: transparent !important;
         border: 1px solid var(--border-glow) !important;
@@ -263,7 +318,7 @@ st.markdown(
     }
     .stButton > button[kind="secondary"]:hover {
         background: rgba(56,189,248,0.08) !important;
-        box-shadow: var(--glow-blue) !important;
+        box-shadow: 0 0 20px rgba(56,189,248,0.15) !important;
     }
 
     /* ── EXPANDER ── */
@@ -276,11 +331,12 @@ st.markdown(
         border: 1px solid var(--border) !important;
         border-radius: var(--radius) !important;
         padding: 1rem 1.4rem !important;
-        transition: border-color 0.3s, box-shadow 0.3s !important;
+        transition: border-color 0.3s, box-shadow 0.3s, background 0.3s !important;
     }
     .streamlit-expanderHeader:hover {
         border-color: var(--border-glow) !important;
-        box-shadow: var(--glow-blue) !important;
+        box-shadow: 0 0 24px rgba(56,189,248,0.15) !important;
+        background: var(--bg-card2) !important;
     }
     .streamlit-expanderContent {
         background: var(--bg-card2) !important;
@@ -299,13 +355,13 @@ st.markdown(
         border-radius: 10px !important;
         color: var(--text-primary) !important;
         font-family: var(--font-mono) !important;
-        transition: border-color 0.3s !important;
+        transition: border-color 0.3s, box-shadow 0.3s !important;
     }
     .stSelectbox > div > div:focus-within,
     .stTextInput > div > div > input:focus,
     .stTextArea > div > div > textarea:focus {
         border-color: var(--accent) !important;
-        box-shadow: 0 0 0 2px rgba(56,189,248,0.15) !important;
+        box-shadow: 0 0 0 2px rgba(56,189,248,0.15), 0 0 16px rgba(56,189,248,0.1) !important;
     }
     .stSelectbox label, .stTextInput label,
     .stTextArea label, .stRadio label,
@@ -318,15 +374,13 @@ st.markdown(
     }
 
     /* ── RADIO ── */
-    .stRadio > div {
-        gap: 0.6rem !important;
-    }
+    .stRadio > div { gap: 0.6rem !important; }
     .stRadio > div > label {
         background: var(--bg-card) !important;
         border: 1px solid var(--border) !important;
         border-radius: 10px !important;
         padding: 0.55rem 1rem !important;
-        transition: border-color 0.25s, background 0.25s !important;
+        transition: border-color 0.25s, background 0.25s, box-shadow 0.25s !important;
         cursor: pointer !important;
         color: var(--text-primary) !important;
         font-family: var(--font-body) !important;
@@ -337,6 +391,7 @@ st.markdown(
     .stRadio > div > label:hover {
         border-color: var(--accent) !important;
         background: rgba(56,189,248,0.06) !important;
+        box-shadow: 0 0 12px rgba(56,189,248,0.1) !important;
     }
 
     /* ── FILE UPLOADER ── */
@@ -344,11 +399,12 @@ st.markdown(
         background: var(--bg-card) !important;
         border: 1.5px dashed var(--border) !important;
         border-radius: var(--radius) !important;
-        transition: border-color 0.3s, background 0.3s !important;
+        transition: border-color 0.3s, background 0.3s, box-shadow 0.3s !important;
     }
     [data-testid="stFileUploader"]:hover {
         border-color: var(--accent) !important;
         background: rgba(56,189,248,0.04) !important;
+        box-shadow: 0 0 20px rgba(56,189,248,0.08) !important;
     }
     [data-testid="stFileUploader"] * { color: var(--text-muted) !important; }
 
@@ -364,6 +420,7 @@ st.markdown(
         border-radius: var(--radius) !important;
         overflow: hidden !important;
         border: 1px solid var(--border) !important;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.3) !important;
     }
     [data-testid="stDataFrame"] th {
         background: var(--bg-card2) !important;
@@ -388,15 +445,21 @@ st.markdown(
         border: none !important;
         font-family: var(--font-mono) !important;
         font-size: 0.85rem !important;
+        animation: slideInAlert 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
     }
-    .stSuccess { background: rgba(52,211,153,0.1) !important; color: #34d399 !important; }
-    .stInfo    { background: rgba(56,189,248,0.1) !important; color: #38bdf8 !important; }
-    .stWarning { background: rgba(251,191,36,0.1) !important; color: #fbbf24 !important; }
-    .stError   { background: rgba(248,113,113,0.1) !important; color: #f87171 !important; }
+    @keyframes slideInAlert {
+        from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0)   scale(1);     }
+    }
+    .stSuccess { background: rgba(52,211,153,0.1)  !important; color: #34d399 !important; border-left: 3px solid #34d399 !important; }
+    .stInfo    { background: rgba(56,189,248,0.1)  !important; color: #38bdf8 !important; border-left: 3px solid #38bdf8 !important; }
+    .stWarning { background: rgba(251,191,36,0.1)  !important; color: #fbbf24 !important; border-left: 3px solid #fbbf24 !important; }
+    .stError   { background: rgba(248,113,113,0.1) !important; color: #f87171 !important; border-left: 3px solid #f87171 !important; }
 
     /* ── SPINNER ── */
     .stSpinner > div > div {
         border-top-color: var(--accent) !important;
+        filter: drop-shadow(0 0 6px rgba(56,189,248,0.6));
     }
 
     /* ── DIVIDER ── */
@@ -404,6 +467,7 @@ st.markdown(
         border: none !important;
         border-top: 1px solid var(--border) !important;
         margin: 2rem 0 !important;
+        position: relative;
     }
 
     /* ── CAPTION ── */
@@ -428,44 +492,54 @@ st.markdown(
         font-size: 0.82rem !important;
     }
 
-    /* ── PROGRESS / SPINNER BAR ── */
+    /* ── PROGRESS BAR ── */
     .stProgress > div > div {
-        background: linear-gradient(90deg, var(--accent), var(--accent2)) !important;
+        background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3)) !important;
+        background-size: 200% 100% !important;
         border-radius: 999px !important;
+        animation: progressGlow 2s linear infinite;
+    }
+    @keyframes progressGlow {
+        0%   { background-position: 200% 0; box-shadow: 0 0 8px rgba(56,189,248,0.5); }
+        50%  { box-shadow: 0 0 16px rgba(129,140,248,0.5); }
+        100% { background-position: -200% 0; box-shadow: 0 0 8px rgba(52,211,153,0.5); }
     }
     .stProgress > div {
         background: var(--bg-card) !important;
         border-radius: 999px !important;
     }
 
-    /* ── WAVEFORM DECORATION (hero header) ── */
+    /* ── ANIMATED WAVEFORM BAR ── */
     .hero-wave {
         display: flex;
         align-items: flex-end;
         gap: 3px;
-        height: 28px;
+        height: 36px;
         margin-bottom: 0.5rem;
     }
     .hero-wave span {
         display: inline-block;
         width: 4px;
         background: var(--accent);
-        border-radius: 2px;
-        animation: wave 1.4s ease-in-out infinite;
-        opacity: 0.7;
+        border-radius: 3px 3px 0 0;
+        animation: wave 1.6s ease-in-out infinite;
+        box-shadow: 0 0 6px currentColor;
     }
-    .hero-wave span:nth-child(1) { height: 8px;  animation-delay: 0.0s; }
-    .hero-wave span:nth-child(2) { height: 18px; animation-delay: 0.1s; }
-    .hero-wave span:nth-child(3) { height: 28px; animation-delay: 0.2s; background: var(--accent2); }
-    .hero-wave span:nth-child(4) { height: 14px; animation-delay: 0.3s; }
-    .hero-wave span:nth-child(5) { height: 22px; animation-delay: 0.4s; background: var(--accent3); }
-    .hero-wave span:nth-child(6) { height: 10px; animation-delay: 0.5s; }
-    .hero-wave span:nth-child(7) { height: 26px; animation-delay: 0.6s; background: var(--accent2); }
-    .hero-wave span:nth-child(8) { height: 16px; animation-delay: 0.7s; }
-    .hero-wave span:nth-child(9) { height: 6px;  animation-delay: 0.8s; }
+    .hero-wave span:nth-child(1)  { height: 8px;  animation-delay: 0.00s; color: #38bdf8; }
+    .hero-wave span:nth-child(2)  { height: 18px; animation-delay: 0.10s; color: #38bdf8; }
+    .hero-wave span:nth-child(3)  { height: 30px; animation-delay: 0.20s; color: #818cf8; background: #818cf8; }
+    .hero-wave span:nth-child(4)  { height: 14px; animation-delay: 0.30s; color: #38bdf8; }
+    .hero-wave span:nth-child(5)  { height: 24px; animation-delay: 0.40s; color: #34d399; background: #34d399; }
+    .hero-wave span:nth-child(6)  { height: 10px; animation-delay: 0.50s; color: #38bdf8; }
+    .hero-wave span:nth-child(7)  { height: 28px; animation-delay: 0.60s; color: #818cf8; background: #818cf8; }
+    .hero-wave span:nth-child(8)  { height: 16px; animation-delay: 0.70s; color: #38bdf8; }
+    .hero-wave span:nth-child(9)  { height: 6px;  animation-delay: 0.80s; color: #38bdf8; }
+    .hero-wave span:nth-child(10) { height: 22px; animation-delay: 0.90s; color: #34d399; background: #34d399; }
+    .hero-wave span:nth-child(11) { height: 12px; animation-delay: 1.00s; color: #38bdf8; }
+    .hero-wave span:nth-child(12) { height: 32px; animation-delay: 1.10s; color: #818cf8; background: #818cf8; }
     @keyframes wave {
-        0%, 100% { transform: scaleY(0.4); opacity: 0.5; }
-        50%       { transform: scaleY(1.0); opacity: 1.0; }
+        0%, 100% { transform: scaleY(0.35); opacity: 0.45; }
+        50%       { transform: scaleY(1.00); opacity: 1.00; }
     }
 
     /* ── BADGE CHIPS ── */
@@ -480,10 +554,20 @@ st.markdown(
         text-transform: uppercase;
         border: 1px solid;
         margin-right: 0.4rem;
+        transition: box-shadow 0.3s, transform 0.3s;
+        animation: badgePop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
     }
-    .badge-blue   { color: #38bdf8; border-color: rgba(56,189,248,0.4);  background: rgba(56,189,248,0.08);  }
-    .badge-purple { color: #818cf8; border-color: rgba(129,140,248,0.4); background: rgba(129,140,248,0.08); }
-    .badge-green  { color: #34d399; border-color: rgba(52,211,153,0.4);  background: rgba(52,211,153,0.08);  }
+    .badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 14px currentColor;
+    }
+    @keyframes badgePop {
+        from { opacity: 0; transform: scale(0.7); }
+        to   { opacity: 1; transform: scale(1);   }
+    }
+    .badge-blue   { color: #38bdf8; border-color: rgba(56,189,248,0.4);  background: rgba(56,189,248,0.08);  animation-delay: 0.1s; }
+    .badge-purple { color: #818cf8; border-color: rgba(129,140,248,0.4); background: rgba(129,140,248,0.08); animation-delay: 0.2s; }
+    .badge-green  { color: #34d399; border-color: rgba(52,211,153,0.4);  background: rgba(52,211,153,0.08);  animation-delay: 0.3s; }
 
     /* ── SECTION HEADING RULE ── */
     .section-heading {
@@ -491,6 +575,24 @@ st.markdown(
         align-items: center;
         gap: 0.75rem;
         margin: 1.8rem 0 1.2rem 0;
+        animation: headingFadeIn 0.5s ease both;
+    }
+    @keyframes headingFadeIn {
+        from { opacity: 0; transform: translateX(-10px); }
+        to   { opacity: 1; transform: translateX(0);     }
+    }
+    .section-heading::before {
+        content: '';
+        width: 3px;
+        height: 20px;
+        background: linear-gradient(180deg, var(--accent), var(--accent2));
+        border-radius: 2px;
+        box-shadow: 0 0 8px rgba(56,189,248,0.5);
+        animation: pulseBar 2s ease-in-out infinite;
+    }
+    @keyframes pulseBar {
+        0%, 100% { box-shadow: 0 0 8px rgba(56,189,248,0.4); }
+        50%       { box-shadow: 0 0 18px rgba(129,140,248,0.7); }
     }
     .section-heading::after {
         content: '';
@@ -503,13 +605,222 @@ st.markdown(
         font-size: 1.15rem;
         font-weight: 700;
         color: var(--text-primary);
+        letter-spacing: -0.01em;
     }
 
-    /* ── BAR CHART AREA ── */
-    [data-testid="stVegaLiteChart"], [data-testid="stArrowVegaLiteChart"] {
+    /* ── GLOW CARD (for stat section wrapping) ── */
+    .glow-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.4rem;
+        position: relative;
+        overflow: hidden;
+        transition: border-color 0.4s, box-shadow 0.4s;
+    }
+    .glow-card::before {
+        content: '';
+        position: absolute;
+        top: -40%; left: -40%;
+        width: 80%; height: 80%;
+        background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+        pointer-events: none;
+        animation: orbFloat 8s ease-in-out infinite;
+    }
+    @keyframes orbFloat {
+        0%, 100% { transform: translate(0,   0);   }
+        33%       { transform: translate(20%, 15%); }
+        66%       { transform: translate(-10%, 25%); }
+    }
+    .glow-card:hover {
+        border-color: var(--border-glow);
+        box-shadow: 0 0 32px rgba(56,189,248,0.12), 0 8px 40px rgba(0,0,0,0.5);
+    }
+
+    /* ── FLOATING PARTICLES (decorative) ── */
+    .particles-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        animation: floatUp linear infinite;
+        opacity: 0;
+    }
+    @keyframes floatUp {
+        0%   { opacity: 0;   transform: translateY(100vh) scale(0);   }
+        10%  { opacity: 0.6; }
+        90%  { opacity: 0.3; }
+        100% { opacity: 0;   transform: translateY(-10vh) scale(1.5); }
+    }
+
+    /* ── SCAN LINE EFFECT ── */
+    .scanline {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(56,189,248,0.4), transparent);
+        z-index: 9999;
+        pointer-events: none;
+        animation: scanDown 8s linear infinite;
+    }
+    @keyframes scanDown {
+        0%   { top: 0%;   opacity: 0; }
+        5%   { opacity: 1; }
+        95%  { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+    }
+
+    /* ── HORIZONTAL SHIMMER RULE ── */
+    .shimmer-rule {
+        height: 1px;
+        border: none;
+        margin: 2rem 0;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(56,189,248,0.15) 20%,
+            rgba(129,140,248,0.4) 50%,
+            rgba(52,211,153,0.15) 80%,
+            transparent 100%);
+        background-size: 200% 100%;
+        animation: shimmerRule 4s ease-in-out infinite;
+    }
+    @keyframes shimmerRule {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    /* ── STATUS PULSE DOT ── */
+    .status-dot {
+        display: inline-block;
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--accent3);
+        box-shadow: 0 0 8px var(--accent3);
+        animation: pulseDot 2s ease-in-out infinite;
+        margin-right: 6px;
+        vertical-align: middle;
+    }
+    @keyframes pulseDot {
+        0%, 100% { box-shadow: 0 0 4px  var(--accent3); transform: scale(1);    }
+        50%       { box-shadow: 0 0 14px var(--accent3); transform: scale(1.25); }
+    }
+
+    /* ── CORNER ACCENT (decorative brackets) ── */
+    .corner-accent {
+        position: relative;
+        padding: 1.4rem;
+    }
+    .corner-accent::before,
+    .corner-accent::after {
+        content: '';
+        position: absolute;
+        width: 16px; height: 16px;
+        border-color: var(--accent);
+        border-style: solid;
+        opacity: 0.5;
+        transition: opacity 0.3s;
+    }
+    .corner-accent::before {
+        top: 0; left: 0;
+        border-width: 2px 0 0 2px;
+        border-radius: 4px 0 0 0;
+    }
+    .corner-accent::after {
+        bottom: 0; right: 0;
+        border-width: 0 2px 2px 0;
+        border-radius: 0 0 4px 0;
+    }
+    .corner-accent:hover::before,
+    .corner-accent:hover::after { opacity: 1; }
+
+
+    /* ── SIDEBAR COLLAPSE BUTTON ── */
+    [data-testid="stSidebarCollapseButton"] button {
         background: transparent !important;
+        border: 1px solid rgba(56,189,248,0.3) !important;
+        border-radius: 50% !important;
+        width: 28px !important;
+        height: 28px !important;
+        padding: 0 !important;
+        opacity: 0.4 !important;
+        transition: opacity 0.3s, box-shadow 0.3s !important;
+        overflow: hidden !important;
+    }
+    [data-testid="stSidebarCollapseButton"] button:hover {
+        opacity: 1 !important;
+        box-shadow: 0 0 12px rgba(56,189,248,0.5) !important;
+    }
+    [data-testid="stSidebarCollapseButton"] button svg {
+        fill: #38bdf8 !important;
+        width: 16px !important;
+        height: 16px !important;
+    }
+    [data-testid="stSidebarCollapseButton"] button svg title {
+        display: none !important;
+    }
+    [data-testid="collapsedControl"] {
+        display: none !important;
+    }
+
+    /* ── LOADING TEXT PULSE ── */
+    .stSpinner p {
+        animation: textPulse 1.4s ease-in-out infinite !important;
+        color: var(--text-muted) !important;
+    }
+    @keyframes textPulse {
+        0%, 100% { opacity: 0.5; }
+        50%       { opacity: 1.0; }
     }
     </style>
+
+    <!-- Floating particles + scan line injected via JS -->
+    <script>
+    (function() {
+        function injectDecorations() {
+            if (document.getElementById('ses-deco')) return;
+            var wrap = document.createElement('div');
+            wrap.id = 'ses-deco';
+
+            // scan line
+            var scan = document.createElement('div');
+            scan.className = 'scanline';
+            wrap.appendChild(scan);
+
+            // particles
+            var pc = document.createElement('div');
+            pc.className = 'particles-container';
+            var colors = ['#38bdf8','#818cf8','#34d399'];
+            for (var i = 0; i < 18; i++) {
+                var p = document.createElement('div');
+                p.className = 'particle';
+                var size = Math.random() * 3 + 1;
+                p.style.width  = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left   = Math.random() * 100 + 'vw';
+                p.style.background = colors[Math.floor(Math.random()*colors.length)];
+                p.style.animationDuration = (Math.random() * 18 + 12) + 's';
+                p.style.animationDelay    = (Math.random() * 12) + 's';
+                pc.appendChild(p);
+            }
+            wrap.appendChild(pc);
+            document.body.appendChild(wrap);
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', injectDecorations);
+        } else {
+            injectDecorations();
+        }
+        // retry after Streamlit re-renders
+        setTimeout(injectDecorations, 1500);
+        setTimeout(injectDecorations, 3000);
+    })();
+    </script>
     """,
     unsafe_allow_html=True,
 )
@@ -555,10 +866,10 @@ def get_gpu_status():
         import tensorflow as tf
         gpus = tf.config.list_physical_devices("GPU")
         if gpus:
-            return f"🟢 GPU · {gpus[0].name}"
-        return "🟡 CPU only"
+            return f"<span class='status-dot'></span> GPU &nbsp;·&nbsp; {gpus[0].name}"
+        return "<span class='status-dot' style='background:#fbbf24;box-shadow:0 0 8px #fbbf24;'></span> CPU only"
     except Exception as exc:
-        return f"⚠️ {exc}"
+        return f"<span class='status-dot' style='background:#f87171;box-shadow:0 0 8px #f87171;'></span> {exc}"
 
 
 def load_audio_source(sample_path=None, audio_bytes=None):
@@ -673,7 +984,8 @@ def main():
         """
         <div class="hero-wave">
           <span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -682,7 +994,7 @@ def main():
     st.markdown(
         """
         <p style="color:#7a8ea8;font-size:1rem;font-family:'DM Mono',monospace;margin-top:-0.5rem;margin-bottom:1rem;">
-        CS-419 · Deep Learning · TESS Dataset &nbsp;·&nbsp;
+        CS-419 &nbsp;&middot;&nbsp; Deep Learning &nbsp;&middot;&nbsp; TESS Dataset &nbsp;&middot;&nbsp;
         <span class="badge badge-blue">7 Emotions</span>
         <span class="badge badge-purple">3 Architectures</span>
         <span class="badge badge-green">Live Inference</span>
@@ -690,29 +1002,34 @@ def main():
         """,
         unsafe_allow_html=True,
     )
-    st.markdown("---")
+
+    st.markdown('<div class="shimmer-rule"></div>', unsafe_allow_html=True)
 
     # ── SIDEBAR ──────────────────────────────────────────────
     with st.sidebar:
         st.markdown(
             "<p style='font-family:\"DM Mono\",monospace;font-size:0.7rem;text-transform:uppercase;"
-            "letter-spacing:0.12em;color:#38bdf8;margin-bottom:0.3rem;'>⚙ Configuration</p>",
+            "letter-spacing:0.12em;color:#38bdf8;margin-bottom:0.3rem;'>Configuration</p>",
             unsafe_allow_html=True,
         )
-        data_root = st.text_input("TESS dataset root path", value=str(DATA_ROOT_DEFAULT))
+        data_root  = st.text_input("TESS dataset root path", value=str(DATA_ROOT_DEFAULT))
         model_type = st.selectbox("Architecture", ["Baseline MLP", "CNN Spectrogram", "CNN + LSTM"])
         epochs     = st.slider("Epochs", min_value=4, max_value=40, value=12, step=4)
         batch_size = st.select_slider("Batch size", options=[16, 32, 48, 64], value=32)
         st.markdown("---")
         st.markdown(
             "<p style='font-family:\"DM Mono\",monospace;font-size:0.7rem;text-transform:uppercase;"
-            "letter-spacing:0.12em;color:#38bdf8;margin-bottom:0.3rem;'>⚡ Execution</p>",
+            "letter-spacing:0.12em;color:#38bdf8;margin-bottom:0.3rem;'>Execution</p>",
             unsafe_allow_html=True,
         )
-        st.write(get_gpu_status())
+        st.markdown(
+            f"<p style='font-family:var(--font-mono);font-size:0.82rem;color:var(--text-primary);'>"
+            f"{get_gpu_status()}</p>",
+            unsafe_allow_html=True,
+        )
 
     # ── PROJECT OVERVIEW EXPANDER ────────────────────────────
-    with st.expander("🔬  Project overview", expanded=True):
+    with st.expander("Project overview", expanded=True):
         col1, col2 = st.columns([3, 2])
         with col1:
             st.markdown(
@@ -735,13 +1052,13 @@ def main():
 
                 | Label | Emotion |
                 |---|---|
-                | `angry` | 😠 Anger |
-                | `disgust` | 🤢 Disgust |
-                | `fear` | 😨 Fear |
-                | `happy` | 😊 Happiness |
-                | `neutral` | 😐 Neutral |
-                | `ps` | 😲 Pleasant Surprise |
-                | `sad` | 😢 Sadness |
+                | `angry` | Anger |
+                | `disgust` | Disgust |
+                | `fear` | Fear |
+                | `happy` | Happiness |
+                | `neutral` | Neutral |
+                | `ps` | Pleasant Surprise |
+                | `sad` | Sadness |
                 """
             )
 
@@ -753,7 +1070,7 @@ def main():
         )
         return
 
-    with st.spinner("Loading dataset metadata…"):
+    with st.spinner("Loading dataset metadata..."):
         df = load_dataset(data_root)
 
     train_df, val_df, test_df = split_dataset(df)
@@ -771,7 +1088,7 @@ def main():
 
     # ── DATASET SNAPSHOT ─────────────────────────────────────
     st.markdown(
-        '<div class="section-heading"><span> Dataset snapshot</span></div>',
+        '<div class="section-heading"><span>Dataset snapshot</span></div>',
         unsafe_allow_html=True,
     )
     c1, c2 = st.columns([1, 1])
@@ -807,9 +1124,9 @@ def main():
         st.pyplot(fig)
 
     # ── TRAIN A MODEL ─────────────────────────────────────────
-    st.markdown("---")
+    st.markdown('<div class="shimmer-rule"></div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="section-heading"><span> Train a model</span></div>',
+        '<div class="section-heading"><span>Train a model</span></div>',
         unsafe_allow_html=True,
     )
     st.markdown(
@@ -819,8 +1136,8 @@ def main():
         unsafe_allow_html=True,
     )
 
-    if st.button("▶  Train model now", type="primary"):
-        with st.spinner("Extracting features and training…"):
+    if st.button("Train model now", type="primary"):
+        with st.spinner("Extracting features and training..."):
             X_train, y_train = get_feature_cache(train_df, model_type, data_root)
             X_val,   y_val   = get_feature_cache(val_df,   model_type, data_root)
             model       = build_model(model_type)
@@ -834,7 +1151,7 @@ def main():
             duration    = format_seconds(time.time() - start_time)
             model_path  = safe_save_model(model, model_type.replace(" ", "_").lower())
 
-            st.success(f"Training finished in {duration}. Model saved → `{model_path}`")
+            st.success(f"Training finished in {duration}. Model saved to `{model_path}`")
             st.session_state["latest_model"]      = model
             st.session_state["latest_model_type"] = model_type
             st.session_state["latest_history"]    = history.history
@@ -842,7 +1159,7 @@ def main():
     if st.session_state.get("latest_history"):
         hist = st.session_state["latest_history"]
         st.markdown(
-            '<div class="section-heading"><span>📈 Training curves</span></div>',
+            '<div class="section-heading"><span>Training curves</span></div>',
             unsafe_allow_html=True,
         )
         fig, axes = plt.subplots(1, 2, figsize=(11, 4))
@@ -870,9 +1187,9 @@ def main():
 
     # ── SAVED RESULTS ────────────────────────────────────────
     if saved_files or cached_files:
-        st.markdown("---")
+        st.markdown('<div class="shimmer-rule"></div>', unsafe_allow_html=True)
         st.markdown(
-            '<div class="section-heading"><span> Saved results</span></div>',
+            '<div class="section-heading"><span>Saved results</span></div>',
             unsafe_allow_html=True,
         )
         file_cols = st.columns(2)
@@ -893,7 +1210,7 @@ def main():
 
         if st.button("Evaluate latest saved model", type="secondary"):
             if saved_files:
-                with st.spinner("Loading checkpoint and evaluating…"):
+                with st.spinner("Loading checkpoint and evaluating..."):
                     model = load_saved_model(model_type)
                     if model is not None:
                         X_test, y_test = get_feature_cache(test_df, model_type, data_root)
@@ -909,9 +1226,9 @@ def main():
                 st.warning("No saved checkpoint files were found.")
 
     # ── AUDIO SAMPLE + PREDICTION ────────────────────────────
-    st.markdown("---")
+    st.markdown('<div class="shimmer-rule"></div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="section-heading"><span> Try an audio sample</span></div>',
+        '<div class="section-heading"><span>Try an audio sample</span></div>',
         unsafe_allow_html=True,
     )
     c1, c2 = st.columns([2, 1])
@@ -922,7 +1239,7 @@ def main():
             emotion_key    = [k for k, v in EMOTION_DISPLAY.items() if v == emotion_choice][0]
             sample_df      = df[df["emotion"] == emotion_key].sample(1, random_state=42)
             sample_path    = sample_df.iloc[0]["path"]
-            st.caption(f"File → `{sample_path}`")
+            st.caption(f"File: `{sample_path}`")
             y, sr = load_audio(sample_path)
             st.audio(sample_path)
         else:
@@ -969,9 +1286,9 @@ def main():
             st.write("Upload or select a clip to see predictions.")
 
     # ── PROJECT DETAILS ──────────────────────────────────────
-    st.markdown("---")
+    st.markdown('<div class="shimmer-rule"></div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="section-heading"><span> Project details</span></div>',
+        '<div class="section-heading"><span>Project details</span></div>',
         unsafe_allow_html=True,
     )
     st.write(
@@ -980,11 +1297,11 @@ def main():
         "and renders predictions live."
     )
     st.write(
-        "For a quick demo choose **Baseline MLP** and train for 4–8 epochs. "
+        "For a quick demo choose **Baseline MLP** and train for 4-8 epochs. "
         "For the most expressive temporal model use **CNN + LSTM**."
     )
     st.caption(
-        "Dataset root path must point to the extracted TESS folder containing `OAF_*` and `YAF_*` subfolders."
+        "Dataset root path must point to the extracted TESS folder containing OAF_* and YAF_* subfolders."
     )
 
 
